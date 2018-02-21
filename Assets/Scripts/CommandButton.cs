@@ -17,8 +17,8 @@ public class CommandButton : CommandBehavior, IPointerClickHandler
 
     public void SetCommand(int commandIndex, CommandList parent)
     {
-        _commandText.text = CommandController.CommandsStrings[commandIndex];
-        _commandList = parent;
-        CurrentCommandIndex = commandIndex;
+        //_commandText.text = NetworkedPlayer.CommandsStrings[commandIndex];
+        //_commandList = parent;
+        //CurrentCommandIndex = commandIndex;
     }
 }

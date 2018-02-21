@@ -7,7 +7,7 @@ public class CommandList : MonoBehaviour
     private readonly List<ButtonToCommand> _activeButtons = new List<ButtonToCommand>();
     [SerializeField] private CommandButton _commandButtonPrefab;
     [SerializeField] private LayoutGroup _commandParent;
-    public CommandController CommandControllerInstance;
+    public NetworkedPlayer NetworkedPlayerInstance;
 
     public void AddCommandButton(int commandIndex)
     {
@@ -24,7 +24,7 @@ public class CommandList : MonoBehaviour
     public void CommandButtonClicked(CommandButton button)
     {
         int commandIndex = button.CurrentCommandIndex;
-        CommandControllerInstance.CommandClicked(commandIndex);
+        //NetworkedPlayerInstance.CommandClicked(commandIndex);
     }
 
     private struct ButtonToCommand

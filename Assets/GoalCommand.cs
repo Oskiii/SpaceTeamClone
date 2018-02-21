@@ -13,7 +13,7 @@ public class GoalCommand : MonoBehaviour
         {
             _currentGoalIndex = value;
             print("Setting goal to: " + value);
-            _goalText.text = CommandController.CommandsStrings[_currentGoalIndex];
+            //_goalText.text = NetworkedPlayer.CommandsStrings[_currentGoalIndex];
         }
     }
 }
