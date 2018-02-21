@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
-using TMPro;
-using UnityEngine;
 
 public struct Command
 {
@@ -13,20 +11,10 @@ public struct Command
 
 public class NetworkedPlayer : CommandsBehavior
 {
-    private readonly List<Command> _activeCommandButtons = new List<Command>();
-    [SerializeField] private CommandList _commandList;
-    [SerializeField] private GoalCommand _goalCommand;
-    [SerializeField] private TextMeshProUGUI debugText;
-
     public event Action<RpcArgs> NewCommandEvent;
     public event Action<RpcArgs> CommandDoneEvent;
     public event Action<RpcArgs> NewGoalEvent;
     public event Action NetworkStartEvent;
-
-    private void Start()
-    {
-        _commandList.NetworkedPlayerInstance = this;
-    }
 
     protected override void NetworkStart()
     {
