@@ -4,28 +4,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CommandButton : CommandBehavior, IPointerClickHandler {
-    private CommandList _commandList;
-    private NetworkedPlayer _np;
+public class CommandButton : CommandBehavior, IPointerClickHandler
+{
     [SerializeField] private TextMeshProUGUI _commandText;
+    private NetworkedPlayer _np;
     public int CurrentCommandIndex { get; private set; }
 
-    public void Init (NetworkedPlayer np) {
-        _np = np;
-    }
-
-    public void OnPointerClick (PointerEventData eventData) {
-        print ("clicked");
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        print("clicked");
         DoCommand();
     }
 
-    private void DoCommand () {
-        _np.networkObject.SendRpc (CommandsBehavior.RPC_DO_COMMAND, Receivers.All, 0);
+    public void Init(NetworkedPlayer np, int commandId, string commandText)
+    {
+        _np = np;
+        _commandText.text = commandText;
     }
 
-    public void SetCommand (int commandIndex, CommandList parent) {
-        //_commandText.text = NetworkedPlayer.CommandsStrings[commandIndex];
-        //_commandList = parent;
-        //CurrentCommandIndex = commandIndex;
+    private void DoCommand()
+    {
+        _np.networkObject.SendRpc(CommandsBehavior.RPC_DO_COMMAND, Receivers.All, 0);
     }
 }

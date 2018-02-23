@@ -420,7 +420,6 @@ GameObject:
   - component: {fileID: 1008851786}
   - component: {fileID: 1008851785}
   - component: {fileID: 1008851787}
-  - component: {fileID: 1008851788}
   m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
@@ -502,21 +501,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &1008851788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1008851783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62ad7fb9cc5a2774a8725b8d3acdf039, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _commandButtonPrefab: {fileID: 114467952159825142, guid: a0d3dd4076d3a564c907815f63c4da10,
-    type: 2}
-  _commandParent: {fileID: 1008851787}
-  CommandControllerInstance: {fileID: 0}
 --- !u!1 &1151831891
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +884,7 @@ GameObject:
   - component: {fileID: 1652546772}
   - component: {fileID: 1652546771}
   - component: {fileID: 1652546775}
+  - component: {fileID: 1652546776}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -996,6 +981,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 247bce6040ef2d94cafb552b5fa94695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _commandList: {fileID: 1008851788}
-  _goalCommand: {fileID: 1594204015}
-  debugText: {fileID: 1606704602}
+--- !u!114 &1652546776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1652546770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ad7fb9cc5a2774a8725b8d3acdf039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _commandButtonParent: {fileID: 1008851784}
+  _commandButtonPrefab: {fileID: 114467952159825142, guid: a0d3dd4076d3a564c907815f63c4da10,
+    type: 2}
