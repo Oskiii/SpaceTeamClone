@@ -4,13 +4,11 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\"][\"int\"][\"int\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"newCommandIndex\"][\"commandIndex\"][\"commandIndex\"]]")]
+	[GeneratedRPC("{\"types\":[[\"int\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"cmdIndex\"]]")]
 	public abstract partial class CommandsBehavior : NetworkBehavior
 	{
-		public const byte RPC_NEW_COMMAND = 0 + 5;
-		public const byte RPC_COMMAND_DONE = 1 + 5;
-		public const byte RPC_NEW_GOAL = 2 + 5;
+		public const byte RPC_DO_COMMAND = 0 + 5;
 		
 		public CommandsNetworkObject networkObject = null;
 
@@ -24,9 +22,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("NewCommand", NewCommand, typeof(int));
-			networkObject.RegisterRpc("CommandDone", CommandDone, typeof(int));
-			networkObject.RegisterRpc("NewGoal", NewGoal, typeof(int));
+			networkObject.RegisterRpc("DoCommand", DoCommand, typeof(int));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -103,19 +99,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		/// <summary>
 		/// Arguments:
-		/// int newCommandIndex
+		/// int cmdIndex
 		/// </summary>
-		public abstract void NewCommand(RpcArgs args);
-		/// <summary>
-		/// Arguments:
-		/// int commandIndex
-		/// </summary>
-		public abstract void CommandDone(RpcArgs args);
-		/// <summary>
-		/// Arguments:
-		/// int commandIndex
-		/// </summary>
-		public abstract void NewGoal(RpcArgs args);
+		public abstract void DoCommand(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}
