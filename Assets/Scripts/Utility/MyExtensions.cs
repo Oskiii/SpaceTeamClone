@@ -15,7 +15,7 @@ public static class MyExtensions
         return r;
     }
 
-    public static void Shuffle<T>(this IList<T> list)
+    public static void ShuffleInPlace<T>(this IList<T> list)
     {
         int n = list.Count;
         while (n > 1)

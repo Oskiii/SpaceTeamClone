@@ -3,17 +3,12 @@ using UnityEngine;
 
 public class GoalCommand : MonoBehaviour
 {
-    private int _currentGoalIndex;
     [SerializeField] private TextMeshProUGUI _goalText;
+    public int GoalIndex { get; private set; }
 
-    public int CurrentGoalIndex
+    public void SetGoal(int commandIndex, string commandText)
     {
-        get { return _currentGoalIndex; }
-        set
-        {
-            _currentGoalIndex = value;
-            print("Setting goal to: " + value);
-            //_goalText.text = NetworkedPlayer.CommandsStrings[_currentGoalIndex];
-        }
+        GoalIndex = commandIndex;
+        _goalText.text = commandText;
     }
 }

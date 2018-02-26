@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 
 public class CommandButton : CommandBehavior, IPointerClickHandler
 {
+    private int _commandIndex;
     [SerializeField] private TextMeshProUGUI _commandText;
     private NetworkedPlayer _np;
-    public int CurrentCommandIndex { get; private set; }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -16,14 +16,15 @@ public class CommandButton : CommandBehavior, IPointerClickHandler
         DoCommand();
     }
 
-    public void Init(NetworkedPlayer np, int commandId, string commandText)
+    public void Init(NetworkedPlayer np, int commandIndex, string commandText)
     {
         _np = np;
+        _commandIndex = commandIndex;
         _commandText.text = commandText;
     }
 
     private void DoCommand()
     {
-        _np.networkObject.SendRpc(CommandsBehavior.RPC_DO_COMMAND, Receivers.All, 0);
+        _np.networkObject.SendRpc(CommandsBehavior.RPC_DO_COMMAND, Receivers.All, _commandIndex);
     }
 }

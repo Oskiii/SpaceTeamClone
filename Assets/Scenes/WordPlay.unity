@@ -995,3 +995,4 @@ MonoBehaviour:
   _commandButtonParent: {fileID: 1008851784}
   _commandButtonPrefab: {fileID: 114467952159825142, guid: a0d3dd4076d3a564c907815f63c4da10,
     type: 2}
+  _goalCommand: {fileID: 1594204015}
