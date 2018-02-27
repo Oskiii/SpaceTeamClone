@@ -14,12 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WordPlay.unity
     guid: 13facfacd16577647a11622025f53085
-  - enabled: 1
+  - enabled: 0
     path: Assets/Bearded Man Studios Inc/Scenes/ServerBrowser.unity
     guid: e25b87e967aec124bba7cd17d4d3a8fc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MoveSphere.unity
     guid: 3c72db647cd37b64db27e20a7f2f5e5f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MoveCube.unity
     guid: 4e2ed21ad746b9e42b68e32da4fd475a

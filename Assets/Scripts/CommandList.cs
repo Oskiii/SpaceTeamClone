@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking;
+using BeardedManStudios.Forge.Networking.Generated;
 using UnityEngine;
 
-public class CommandList : MonoBehaviour
-{
+public class CommandList : MonoBehaviour {
     [SerializeField] private RectTransform _commandButtonParent;
     [SerializeField] private CommandButton _commandButtonPrefab;
     private List<int> _commandList;
@@ -11,70 +11,80 @@ public class CommandList : MonoBehaviour
     private List<string> _wordList;
     private NetworkedPlayer np;
 
-    private void Awake()
-    {
-        np = GetComponent<NetworkedPlayer>();
+    private void Awake () {
+        np = GetComponent<NetworkedPlayer> ();
         np.NetworkStartEvent += NetworkStart;
         np.DoCommandEvent += DoCommand;
         np.NewCommandsEvent += NewCommands;
         np.NewWordListEvent += NewWordList;
+
+        _goalCommand.TimerDoneEvent += GoalTimerDone;
     }
 
-    private void NewCommandButton(int cmdIndex)
-    {
-        GameObject obj = Instantiate(_commandButtonPrefab.gameObject, _commandButtonParent);
-        var button = obj.GetComponent<CommandButton>();
+    private void OnDestroy(){
+        np.NetworkStartEvent -= NetworkStart;
+        np.DoCommandEvent -= DoCommand;
+        np.NewCommandsEvent -= NewCommands;
+        np.NewWordListEvent -= NewWordList;
+
+        _goalCommand.TimerDoneEvent -= GoalTimerDone;
+    }
+
+    private void NewCommandButton (int cmdIndex) {
+        GameObject obj = Instantiate (_commandButtonPrefab.gameObject, _commandButtonParent);
+        var button = obj.GetComponent<CommandButton> ();
 
         string word = _wordList[cmdIndex];
-        button.Init(np, cmdIndex, word);
-        BMSLogger.Instance.Log("New command: " + word);
+        button.Init (np, cmdIndex, word);
+        BMSLogger.Instance.Log ("New command: " + word);
     }
 
-    private void NetworkStart()
-    {
-    }
+    private void NetworkStart () { }
 
-    private void NewCommands(RpcArgs args)
-    {
-        var commandListBytes = args.GetNext<byte[]>();
-        _commandList = commandListBytes.Deserialize<List<int>>();
+    private void NewCommands (RpcArgs args) {
+        var commandListBytes = args.GetNext<byte[]> ();
+        _commandList = commandListBytes.Deserialize<List<int>> ();
 
-        foreach (int cmdIndex in _commandList)
-        {
-            NewCommandButton(cmdIndex);
+        foreach (int cmdIndex in _commandList) {
+            NewCommandButton (cmdIndex);
         }
     }
 
-    private void NewWordList(RpcArgs args)
-    {
-        var wordListBytes = args.GetNext<byte[]>();
-        _wordList = wordListBytes.Deserialize<List<string>>();
+    private void NewWordList (RpcArgs args) {
+        var wordListBytes = args.GetNext<byte[]> ();
+        _wordList = wordListBytes.Deserialize<List<string>> ();
 
-        foreach (string s in _wordList)
-        {
-            BMSLogger.Instance.Log(s);
+        foreach (string s in _wordList) {
+            BMSLogger.Instance.Log (s);
         }
 
+        PickNewGoal ();
+    }
+
+    private void PickNewGoal () {
+        int goalIndex = Random.Range (0, _wordList.Count);
+        print ("Picking out of " + _wordList.Count + ", picked: " + goalIndex);
+        _goalCommand.SetGoal (goalIndex, _wordList[goalIndex]);
+    }
+
+    private void DoCommand (RpcArgs args) {
+        var doneIndex = args.GetNext<int> ();
+        BMSLogger.Instance.Log ("Do command: " + doneIndex);
+
+        if (_goalCommand.GoalIndex == doneIndex) {
+            print ("goal: " + _goalCommand.GoalIndex + " done: " + doneIndex);
+            BMSLogger.Instance.Log ("YAY OUR GOAL WAS SOLVED");
+            PickNewGoal ();
+
+            if(np.networkObject.IsServer){
+                np.ActiveScenario.IncreaseProgress();
+            }
+        }
+    }
+
+    private void GoalTimerDone(){
         PickNewGoal();
-    }
-
-    private void PickNewGoal()
-    {
-        int goalIndex = Random.Range(0, _wordList.Count);
-        print("Picking out of " + _wordList.Count + ", picked: " + goalIndex);
-        _goalCommand.SetGoal(goalIndex, _wordList[goalIndex]);
-    }
-
-    private void DoCommand(RpcArgs args)
-    {
-        var doneIndex = args.GetNext<int>();
-        BMSLogger.Instance.Log("Do command: " + doneIndex);
-
-        if (_goalCommand.GoalIndex == doneIndex)
-        {
-            print("goal: " + _goalCommand.GoalIndex + " done: " + doneIndex);
-            BMSLogger.Instance.Log("YAY OUR GOAL WAS SOLVED");
-            PickNewGoal();
-        }
+        BMSLogger.Instance.Log("TIMER DONE");
+        np.networkObject.SendRpc(CommandsBehavior.RPC_COMMAND_TIMER_DONE, Receivers.All);
     }
 }

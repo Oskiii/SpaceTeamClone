@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
 
-public struct Command
-{
-    public int CommandIndex;
-    public NetworkingPlayer Owner;
-}
-
 public class NetworkedPlayer : CommandsBehavior
 {
     public static readonly List<string> CommandsStrings = new List<string>
@@ -19,14 +13,17 @@ public class NetworkedPlayer : CommandsBehavior
         "Eat cabbage",
         "Hammer the nail",
         "Tighten the whippermancer",
-        "Rock the bells",
-        "Dimper the dingdongs"
+        // "Rock the bells",
+        // "Dimper the dingdongs"
     };
 
     public event Action<RpcArgs> DoCommandEvent;
     public event Action<RpcArgs> NewCommandsEvent;
     public event Action<RpcArgs> NewWordListEvent;
+    public event Action<RpcArgs> CommandTimerDoneEvent;
     public event Action NetworkStartEvent;
+
+    public Scenario ActiveScenario {get; private set;}
 
 
     protected override void NetworkStart()
@@ -43,7 +40,7 @@ public class NetworkedPlayer : CommandsBehavior
             networkObject.SendRpc(RPC_NEW_WORD_LIST, Receivers.All, bytes);
 
             // Send some words to each player to be presented as buttons
-            var wordsPerPlayer = 2;
+            var wordsPerPlayer = 3;
             var wordsSent = 0;
             networkObject.Networker.IteratePlayers(
                 player =>
@@ -55,7 +52,16 @@ public class NetworkedPlayer : CommandsBehavior
                     }
                     wordsSent += wordsPerPlayer;
                     SendCommandsToPlayer(player, wordIndexes);
-                });
+                }
+            );
+
+            ActiveScenario = new Scenario();
+            ActiveScenario.OnComplete += () => {
+                BMSLogger.Instance.Log("SCENARIO COMPLETE!");
+            };
+            ActiveScenario.OnProgressChanged += (p) => {
+                BMSLogger.Instance.Log("PROGRESS :" + p);
+            };
         }
 
         if (NetworkStartEvent != null)
@@ -93,6 +99,18 @@ public class NetworkedPlayer : CommandsBehavior
         if (NewWordListEvent != null)
         {
             NewWordListEvent(args);
+        }
+    }
+
+    public override void CommandTimerDone(RpcArgs args)
+    {
+        // if (CommandTimerDoneEvent != null)
+        // {
+        //     CommandTimerDoneEvent(args);
+        // }
+
+        if(networkObject.IsServer){
+            ActiveScenario.DecreaseProgress();
         }
     }
 }

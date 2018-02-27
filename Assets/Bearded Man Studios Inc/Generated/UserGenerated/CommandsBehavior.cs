@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"int\"][\"byte[]\"][\"byte[]\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"cmdIndex\"][\"commands\"][\"newWordList\"]]")]
+	[GeneratedRPC("{\"types\":[[\"int\"][\"byte[]\"][\"byte[]\"][]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"cmdIndex\"][\"commands\"][\"newWordList\"][]]")]
 	public abstract partial class CommandsBehavior : NetworkBehavior
 	{
 		public const byte RPC_DO_COMMAND = 0 + 5;
 		public const byte RPC_NEW_COMMANDS = 1 + 5;
 		public const byte RPC_NEW_WORD_LIST = 2 + 5;
+		public const byte RPC_COMMAND_TIMER_DONE = 3 + 5;
 		
 		public CommandsNetworkObject networkObject = null;
 
@@ -27,6 +28,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.RegisterRpc("DoCommand", DoCommand, typeof(int));
 			networkObject.RegisterRpc("NewCommands", NewCommands, typeof(byte[]));
 			networkObject.RegisterRpc("NewWordList", NewWordList, typeof(byte[]));
+			networkObject.RegisterRpc("CommandTimerDone", CommandTimerDone);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -116,6 +118,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		/// byte[] newWordList
 		/// </summary>
 		public abstract void NewWordList(RpcArgs args);
+		/// <summary>
+		/// Arguments:
+		/// </summary>
+		public abstract void CommandTimerDone(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}
